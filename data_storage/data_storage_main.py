@@ -61,10 +61,10 @@ def store_data_in_redis(prepared_data, data_key):
     print(f"\n\n\nHERE: {redis_data_key}\n\n\n")
 
     #? Redis connection details
-    redis_host = 'redis-18635.c62.us-east-1-4.ec2.cloud.redislabs.com'
+    redis_host = '<host name here>'
     redis_port = 18635  # The port number for your Redis instance
-    redis_password = 'veQLwCVeOnqZQ6k6kk2yPgHpLVP0KbV3'  # Replace with your Redis password if required
-    redis_db_name = 'Ryan-free-db'  # Your Redis database name
+    redis_password = '<password here>'  # Replace with your Redis password if required
+    redis_db_name = '<name of database here>'  # Your Redis database name
 
     #? Connect to Redis
     r = redis.StrictRedis(host=redis_host, port=redis_port, password=redis_password, db=0, decode_responses=True)
