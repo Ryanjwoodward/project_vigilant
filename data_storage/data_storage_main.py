@@ -18,69 +18,27 @@
 #   AUTHOR          |       Ryan Woodward
 #   ORGANIZATION    |       Grand Canyon University
 #   CLASS           |       SWE452 - SDLC II
-#   DATE            |       September 11, 2023
+#   DATE            |       September 27, 2023
 #   PROJECT         |       Project Vigilant - A Comprehensive Linux Server Monitoring System
-#   FILE            |       data_handling_main.py
+#   FILE            |       data_storage_main.py
 #-------------------------------------------------------------------------------------------------------------------------------
-#   DESCRIPTION     |       This file serves as the entry point to all data handling operations. Such as collection, cleaning,
-#                   |       preparation, and storage.
+#   DESCRIPTION     |       This file serves as the access point to all data storage processes and scripts
+#                   |       This file is meant to be accessed, only, from the data_handling_main script.
 =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 """
+
+
 
 #*-----------------------------------------------------------------------------------------
 #*                                        IMPORTS
 #*-----------------------------------------------------------------------------------------
 
-import datetime
+import redis
 
-#? Imports for files defined by Project Vigilant:
-from data_collection.data_collection_main import *      #? Import the Primary Data Collection Script
-from data_preparation.data_preparation_main import *    #? Import the Primary Data Preparation Script
-from data_storage.data_storage_main import *            #? Import the Primary Data Storage Script
 #*-----------------------------------------------------------------------------------------
 #*                                    GLOBAL VARIABLES
 #*-----------------------------------------------------------------------------------------
 
-#? This dictionary is used to store all the gathered metrics from the data_collection scripts
-#? It is stored as unedited, and uncleaned data. It will be sent to the data_cleaning scripts.
-#? Following this the data will be sent to the data_storage scripts and on to Redis
-metrics_dictionary = {
-    "cpu_usage"     : "--", 
-    "memory_usage"  : "--",
-    "disk_space"    : "--",
-    "throughput"    : "--",
-    "latency"       : "--",
-    "connection"    : "--",
-    "load_average"  : "--",
-    "response_time" : "--",
-    "system_uptime" : "--",
-    "timestamp"     : "--"
-}
-
-prepared_dictionary = {
-    'cpu_usage_1mi'          : "--",
-    'cpu_usage_5mi'          : "--",
-    'cpu_usage_15mi'         : "--",
-    'memory_total'           : "--",
-    'memory_used'            : "--",
-    'memory_free'            : "--",
-    'memory_percent_used'    : "--",
-    'disk_space_total'       : "--",
-    'disk_space_used'        : "--",
-    'disk_space_free'        : "--",
-    'disk_space_percent_used': "--",
-    'network_connection'     : "--",
-    'network_latency'        : "--",
-    'network_throughput_rx'  : "--",
-    'network_throughput_tx'  : "--",
-    'perf_load_avg_1mi'      : "--",
-    'perf_load_avg_5mi'      : "--",
-    'perf_load_avg_15mi'     : "--",
-    'perf_response_time'     : "--",
-    'perf_uptime_duration'   : "--", 
-    'perf_uptime_users'      : "--",
-    'timestamp'              : "--"
-}
 
 
 #*-----------------------------------------------------------------------------------------
@@ -88,32 +46,33 @@ prepared_dictionary = {
 #*-----------------------------------------------------------------------------------------
 
 """
-
+    The store_data_in_redis function is designed to store prepared data in a Redis database. It takes two parameters: 
+    prepared_data, which is the data to be stored, and data_key, which is used to construct the Redis key under which 
+    the data will be stored. The function first constructs a Redis key by appending the data_key to a template key named 
+    "vigilant_set." It then establishes a connection to a specific Redis instance with the provided connection details, 
+    including the host, port, password, and database name. Finally, it uses the hmset method to set the prepared_data as 
+    a hash in Redis under the constructed Redis key.
 """
-def init_data_handling(iteration_counter):
-    print("STARTING - Data Handling")
+def store_data_in_redis(prepared_data, data_key):
 
-    metrics_dictionary["timestamp"] = get_current_timestamp()
+    key_template = "vigilant_set"
+    redis_data_key = key_template + str(data_key)
 
-    init_data_collection(metrics_dictionary)
-    time.sleep(3)
+    print(f"\n\n\nHERE: {redis_data_key}\n\n\n")
 
-    #print("\n\n********************\n Metrics Dictionary dh_main\n********************")
-    #for key, value in metrics_dictionary.items():
-        #print(f"{key}: {value}")
+    #? Redis connection details
+    redis_host = 'redis-18635.c62.us-east-1-4.ec2.cloud.redislabs.com'
+    redis_port = 18635  # The port number for your Redis instance
+    redis_password = 'veQLwCVeOnqZQ6k6kk2yPgHpLVP0KbV3'  # Replace with your Redis password if required
+    redis_db_name = 'Ryan-free-db'  # Your Redis database name
 
-    init_data_preparation(metrics_dictionary, prepared_dictionary)
-
-    #print("\n\n=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n Clean Dictionary dh_main\n=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-")
-    #for key, value in  prepared_dictionary.items():
-    #    print(f"{key}: {value}")
-
-    store_data_in_redis(prepared_dictionary, iteration_counter)
+    #? Connect to Redis
+    r = redis.StrictRedis(host=redis_host, port=redis_port, password=redis_password, db=0, decode_responses=True)
 
 
-"""
 
-"""
-def get_current_timestamp():
-    current_time = datetime.datetime.now()
-    return current_time.strftime('%Y-%m-%d %H:%M:%S.%f')
+    #? Set the dictionary in Redis with a specific key
+    r.hmset(redis_data_key, prepared_data)
+
+
+
