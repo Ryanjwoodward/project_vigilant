@@ -101,32 +101,3 @@ def prepare_uptime_users_data(uptime_data):
     
 
 
-"""
-    The prepare_uptime_duration_data function takes an input string up_time_str as its argument. It uses regular expressions 
-    to search for and extract the uptime duration from this string. The uptime duration can be in the format "X day(s), HH:MM" 
-    or just "HH:MM" (without days). The function extracts the number of days, hours, and minutes (if present), converts them to 
-    integers, and then calculates the total uptime duration in minutes. Finally, it returns the duration in the "HH:MM" format, 
-    where hours and minutes are zero-padded. If no uptime duration is found in the input string, the function defaults to 
-    returning "00:00".
-"""
-def prepare_uptime_duration_data(up_time_str):
-    #? Use regular expressions to extract the uptime duration
-    duration_match = re.search(r'up\s+((\d+) day)?\s*((\d+):(\d+))', up_time_str)
-    
-    if duration_match:
-        #? Extract the number of days (if present) and convert it to an integer, default to 0 if not found
-        days = int(duration_match.group(2)) if duration_match.group(2) else 0
-        #? Extract the number of hours (if present) and convert it to an integer, default to 0 if not found
-        hours = int(duration_match.group(4)) if duration_match.group(4) else 0
-        #? Extract the number of minutes (if present) and convert it to an integer, default to 0 if not found
-        mins = int(duration_match.group(5)) if duration_match.group(5) else 0
-    else:
-        #?If no match was found, set days, hours, and minutes to 0
-        days, hours, mins = 0, 0, 0
-    
-    #? Calculate the total uptime duration in minutes and format it as "HH:MM"
-    total_minutes = days * 24 * 60 + hours * 60 + mins
-    return f"{total_minutes // 60:02d}:{total_minutes % 60:02d}"
-
-    
-

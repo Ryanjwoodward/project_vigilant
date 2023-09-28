@@ -37,6 +37,7 @@ import datetime
 from data_collection.data_collection_main import *      #? Import the Primary Data Collection Script
 from data_preparation.data_preparation_main import *    #? Import the Primary Data Preparation Script
 from data_storage.data_storage_main import *            #? Import the Primary Data Storage Script
+
 #*-----------------------------------------------------------------------------------------
 #*                                    GLOBAL VARIABLES
 #*-----------------------------------------------------------------------------------------
@@ -57,6 +58,9 @@ metrics_dictionary = {
     "timestamp"     : "--"
 }
 
+#? This dictiojary is used to store all the collected data after cleaning/preparation. This
+#? dictionary data is heavily edited and expanded so that is can be stored in a Redis Cache
+#? (for use with AWS) and also for a PostgresSQL Schema (for Grafana prior to Cloud Launch)
 prepared_dictionary = {
     'cpu_usage_1mi'          : "--",
     'cpu_usage_5mi'          : "--",
@@ -77,7 +81,6 @@ prepared_dictionary = {
     'perf_load_avg_5mi'      : "--",
     'perf_load_avg_15mi'     : "--",
     'perf_response_time'     : "--",
-    'perf_uptime_duration'   : "--", 
     'perf_uptime_users'      : "--",
     'timestamp'              : "--"
 }
@@ -88,31 +91,33 @@ prepared_dictionary = {
 #*-----------------------------------------------------------------------------------------
 
 """
-
+    The 'init_data_handling' function is used to begin a data handling cycle which consists of three
+    steps. First, data collection, Second, data preparation, and Third data storage. 
 """
 def init_data_handling(iteration_counter):
-    print("STARTING - Data Handling")
 
+    print("Begin Project Vigilant - Data Handling Cycle")
+
+    #? Update the metrics dictionary with the current timestamp
     metrics_dictionary["timestamp"] = get_current_timestamp()
 
+    #? Step 1: Initialize data collection, which populates the metrics_dictionary
     init_data_collection(metrics_dictionary)
-    time.sleep(3)
+    
+    time.sleep(0.5)
 
-    #print("\n\n********************\n Metrics Dictionary dh_main\n********************")
-    #for key, value in metrics_dictionary.items():
-        #print(f"{key}: {value}")
-
+    #? Step 2: Initialize data preparation, which processes and prepares data for storage
     init_data_preparation(metrics_dictionary, prepared_dictionary)
+    time.sleep(0.5)
 
-    #print("\n\n=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n Clean Dictionary dh_main\n=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-")
-    #for key, value in  prepared_dictionary.items():
-    #    print(f"{key}: {value}")
-
-    store_data_in_redis(prepared_dictionary, iteration_counter)
+    #? Step 3: Initialize data storage, which stores the prepared data in a database
+    init_data_storage(prepared_dictionary, iteration_counter)
+    time.sleep(2)
 
 
 """
-
+    Simple function to obtain the current date and time so that each data handling cycle can be distinguished
+    according top date and time.
 """
 def get_current_timestamp():
     current_time = datetime.datetime.now()

@@ -8,12 +8,13 @@
 ██╔═══╝ ██╔══██╗██║   ██║██   ██║██╔══╝  ██║        ██║       ╚██╗ ██╔╝██║██║   ██║██║██║     ██╔══██║██║╚██╗██║   ██║   
 ██║     ██║  ██║╚██████╔╝╚█████╔╝███████╗╚██████╗   ██║        ╚████╔╝ ██║╚██████╔╝██║███████╗██║  ██║██║ ╚████║   ██║   
 ╚═╝     ╚═╝  ╚═╝ ╚═════╝  ╚════╝ ╚══════╝ ╚═════╝   ╚═╝         ╚═══╝  ╚═╝ ╚═════╝ ╚═╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═══╝   ╚═╝                                                                                                                            
-      _       _            _                     _ _ _                                 _                     
-   __| | __ _| |_ __ _    | |__   __ _ _ __   __| | (_)_ __   __ _     _ __ ___   __ _(_)_ __    _ __  _   _ 
-  / _` |/ _` | __/ _` |   | '_ \ / _` | '_ \ / _` | | | '_ \ / _` |   | '_ ` _ \ / _` | | '_ \  | '_ \| | | |
- | (_| | (_| | || (_| |   | | | | (_| | | | | (_| | | | | | | (_| |   | | | | | | (_| | | | | |_| |_) | |_| |
-  \__,_|\__,_|\__\__,_|___|_| |_|\__,_|_| |_|\__,_|_|_|_| |_|\__, |___|_| |_| |_|\__,_|_|_| |_(_) .__/ \__, |
-                     |_____|                                 |___/_____|                        |_|    |___/                          
+      _       _                _                                                 _                     
+   __| | __ _| |_ __ _     ___| |_ ___  _ __ __ _  __ _  ___     _ __ ___   __ _(_)_ __    _ __  _   _ 
+  / _` |/ _` | __/ _` |   / __| __/ _ \| '__/ _` |/ _` |/ _ \   | '_ ` _ \ / _` | | '_ \  | '_ \| | | |
+ | (_| | (_| | || (_| |   \__ \ || (_) | | | (_| | (_| |  __/   | | | | | | (_| | | | | |_| |_) | |_| |
+  \__,_|\__,_|\__\__,_|___|___/\__\___/|_|  \__,_|\__, |\___|___|_| |_| |_|\__,_|_|_| |_(_) .__/ \__, |
+                     |_____|                      |___/    |_____|                        |_|    |___/ 
+                    
 =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 #   AUTHOR          |       Ryan Woodward
 #   ORGANIZATION    |       Grand Canyon University
@@ -33,7 +34,9 @@
 #*                                        IMPORTS
 #*-----------------------------------------------------------------------------------------
 
-import redis
+#? Imports for files defined by Project Vigilant:
+from data_storage.data_storage_redis import *       #? Import for storing data in Redis Caches
+from data_storage.data_storage_postgres import *    #? Import for storing data in PostGres SQL Schema
 
 #*-----------------------------------------------------------------------------------------
 #*                                    GLOBAL VARIABLES
@@ -46,33 +49,33 @@ import redis
 #*-----------------------------------------------------------------------------------------
 
 """
-    The store_data_in_redis function is designed to store prepared data in a Redis database. It takes two parameters: 
-    prepared_data, which is the data to be stored, and data_key, which is used to construct the Redis key under which 
-    the data will be stored. The function first constructs a Redis key by appending the data_key to a template key named 
-    "vigilant_set." It then establishes a connection to a specific Redis instance with the provided connection details, 
-    including the host, port, password, and database name. Finally, it uses the hmset method to set the prepared_data as 
-    a hash in Redis under the constructed Redis key.
+    The init_data_storage function is designed to initialize data storage by storing prepared data in both Redis and PostgreSQL databases. 
+    It takes two parameters: prepared_data, which is the data to be stored, and data_key, which is used to store data in Redis.
+    First, it calls the store_data_in_redis function to store the prepared data in Redis using the provided data key.
+    Then, it establishes a connection to the PostgreSQL database using the specified connection parameters (host, database, username, and password).
+    Next, it defines the schema name (project_vigilant_schema) and table name (collected_data_metrics) within the PostgreSQL database where the data will be stored.
+    Finally, it calls the store_data_in_postgres function to insert the prepared data into the PostgreSQL database within the specified schema and table. 
+    This function enables data to be stored in both Redis and PostgreSQL databases, facilitating data storage and retrieval for the project.
 """
-def store_data_in_redis(prepared_data, data_key):
+def init_data_storage(prepared_data, data_key):
+    #? Store prepared data in Redis using the specified data key
+    store_data_in_redis(prepared_data, data_key)
 
-    key_template = "vigilant_set"
-    redis_data_key = key_template + str(data_key)
+    #? Establish a connection to the PostgreSQL database
+    db_connection = psycopg2.connect(
+        host="localhost",
+        database="project_vigilant_db",
+        user="vigilant_developer",
+        password="root"
+    )
 
-    print(f"\n\n\nHERE: {redis_data_key}\n\n\n")
+    #? Define the schema and table names for PostgreSQL
+    schema_name = "project_vigilant_schema"
+    table_name = "collected_data_metrics"
 
-    #? Redis connection details
-    redis_host = '<host name here>'
-    redis_port = 18635  # The port number for your Redis instance
-    redis_password = '<password here>'  # Replace with your Redis password if required
-    redis_db_name = '<name of database here>'  # Your Redis database name
+    #? Store the prepared data in the PostgreSQL database within the specified schema and table
+    store_data_in_postgres(db_connection, prepared_data, schema_name, table_name)
 
-    #? Connect to Redis
-    r = redis.StrictRedis(host=redis_host, port=redis_port, password=redis_password, db=0, decode_responses=True)
-
-
-
-    #? Set the dictionary in Redis with a specific key
-    r.hmset(redis_data_key, prepared_data)
 
 
 

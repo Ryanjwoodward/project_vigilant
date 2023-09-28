@@ -48,7 +48,8 @@ from data_preparation.preparation_performance import *        #? Import all func
 #*-----------------------------------------------------------------------------------------
 
 """
-     The init_data_preparation function serves as a data preparation mechanism that...
+     The init_data_preparation function serves as a data preparation mechanism that calls the functions that reformat, organize, and segregate
+     the data in a way that makes it useful to store in a Redis Cache and a PostgresSQL Schema.
 """
 def init_data_preparation(dirty_data_dict, clean_data_dict):
     print("\n\nInitiating Preparation.")
@@ -68,6 +69,5 @@ def init_data_preparation(dirty_data_dict, clean_data_dict):
     clean_data_dict['perf_response_time'] = prepare_response_time_data(dirty_data_dict['response_time'])
     clean_data_dict['perf_uptime_users'] = prepare_uptime_users_data(dirty_data_dict['system_uptime']) 
 
-    clean_data_dict['perf_uptime_duration'] = prepare_uptime_duration_data(dirty_data_dict['system_uptime'])
     #? Insert the time stamp in the dictionary with data prepared
     clean_data_dict['timestamp'] = dirty_data_dict['timestamp']
