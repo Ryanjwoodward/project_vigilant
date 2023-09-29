@@ -91,23 +91,6 @@ prepared_dictionary = {
     'timestamp'              : "--"
 }
 
-#* -------------------------------------------
-#*  ML TRAINING DICTIONARIES
-#* -------------------------------------------
-get_cpu_usage_1mi_dict = {
-    'timestamp' :   "--"
-}
-
-get_cpu_usage_5mi_dict = {
-    'timestamp' :   "--"
-}
-
-get_cpu_usage_15mi_dict = {
-    'timestamp' :   "--"
-}
-
-
-
 
 #*-----------------------------------------------------------------------------------------
 #*                                       FUNCTIONS
@@ -119,24 +102,29 @@ get_cpu_usage_15mi_dict = {
 """
 def init_data_handling(iteration_counter):
 
-    print("Begin Project Vigilant - Data Handling Cycle")
+    print("\tBegin Project Vigilant - Data Handling Cycle.")
 
     #? Update the metrics dictionary with the current timestamp
     metrics_dictionary["timestamp"] = get_current_timestamp()
 
     #? Step 1: Initialize data collection, which populates the metrics_dictionary
     init_data_collection(metrics_dictionary)
-    
+    print("\t\tData Successfully Collected.\n")
     time.sleep(0.5)
 
     #? Step 2: Initialize data preparation, which processes and prepares data for storage
     init_data_preparation(metrics_dictionary, prepared_dictionary)
-    time.sleep(0.5)
+    print("\t\tData Succesfully Prepared.\n")
+    time.sleep(2)
 
     #? Step 3: Initialize data storage, which stores the prepared data in a database
     init_data_storage(prepared_dictionary, iteration_counter)
-    time.sleep(5)
+    print("\t\tData Successfully Stored.\n\n")
+    time.sleep(0.5)
 
+    #print("\n\n\n")
+    #for key, value in prepared_dictionary.items():
+    #    print(f'{key}: {value}')
 
 """
     Simple function to obtain the current date and time so that each data handling cycle can be distinguished
@@ -145,3 +133,10 @@ def init_data_handling(iteration_counter):
 def get_current_timestamp():
     current_time = datetime.datetime.now()
     return current_time.strftime('%Y-%m-%d %H:%M:%S.%f')
+
+
+"""
+    This function simply allows outside files to access the data dictionary
+"""
+def get_prepared_data():
+    return prepared_dictionary

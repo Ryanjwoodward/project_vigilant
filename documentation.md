@@ -38,3 +38,7 @@ psql -U vigilant_developer -d project_vigilant_db -W
 
 ### Page for accessing Grafana
 http://localhost:3000/
+
+
+### The historical training Data is keys 0 - 100, this is used for training
+### the data for prediction is keys 100+

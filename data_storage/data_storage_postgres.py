@@ -39,7 +39,17 @@ from psycopg2 import sql
 #*                                    GLOBAL VARIABLES
 #*-----------------------------------------------------------------------------------------
 
+#? Establish a connection to the PostgreSQL database
+db_connection = psycopg2.connect(
+    host="localhost",
+    database="project_vigilant_db",
+    user="vigilant_developer",
+    password="root"
+)
 
+#? Define the schema and table names for PostgreSQL
+schema_name = "project_vigilant_schema"
+table_name = "collected_data_metrics"
 
 #*-----------------------------------------------------------------------------------------
 #*                                       FUNCTIONS
@@ -53,10 +63,11 @@ from psycopg2 import sql
       and prints a success message. If an error occurs during insertion, it prints an error message with details
       of the exception.
 """
-def store_data_in_postgres(connection, data, schema_name, table_name):
+def store_data_in_postgres(data):
+
     try:
         #? Create a cursor object for database interaction
-        cursor = connection.cursor()
+        cursor = db_connection.cursor()
         
         #? Define the SQL query for inserting data into a specified schema and table
         insert_query = f"""
@@ -111,12 +122,12 @@ def store_data_in_postgres(connection, data, schema_name, table_name):
         cursor.execute(insert_query, data)
         
         #? Commit the transaction to save the data in the database
-        connection.commit()
+        db_connection.commit()
         
         #? Close the cursor
         cursor.close()
         
-        print("Data inserted successfully.")
+        print("\t\tData Successfully Inserted in PostgreSQL.")
     except Exception as e:
         #? Handle exceptions and print an error message if insertion fails
         print(f"Error inserting data: {e}")

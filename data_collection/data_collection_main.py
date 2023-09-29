@@ -54,7 +54,7 @@ from data_collection.metrics_performance import *         #? Import all function
      metrics_dictionary. 
 """
 def init_data_collection(metrics_dictionary):
-    print("Initiating Data Collection.")
+    print("\t\tInitiating Data Collection.")
 
     #? Obtain System Resource Usage Metrics
     metrics_dictionary["cpu_usage"] = get_cpu_usage()

@@ -34,6 +34,8 @@
 #*                                        IMPORTS
 #*-----------------------------------------------------------------------------------------
 
+import time
+
 #? Imports for files defined by Project Vigilant:
 from data_storage.data_storage_redis import *       #? Import for storing data in Redis Caches
 from data_storage.data_storage_postgres import *    #? Import for storing data in PostGres SQL Schema
@@ -59,25 +61,14 @@ from data_storage.data_storage_postgres import *    #? Import for storing data i
 """
 def init_data_storage(prepared_data, data_key):
 
-    print("Iniating Data Storage.")
+    print("\t\tInitiating Data Storage.")
 
     #? Store prepared data in Redis using the specified data key
     store_data_in_redis(prepared_data, data_key)
-
-    #? Establish a connection to the PostgreSQL database
-    db_connection = psycopg2.connect(
-        host="localhost",
-        database="project_vigilant_db",
-        user="vigilant_developer",
-        password="root"
-    )
-
-    #? Define the schema and table names for PostgreSQL
-    schema_name = "project_vigilant_schema"
-    table_name = "collected_data_metrics"
+    time.sleep(2)
 
     #? Store the prepared data in the PostgreSQL database within the specified schema and table
-    store_data_in_postgres(db_connection, prepared_data, schema_name, table_name)
+    store_data_in_postgres(prepared_data)
 
 
 

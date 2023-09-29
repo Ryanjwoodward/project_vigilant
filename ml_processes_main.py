@@ -1,4 +1,3 @@
-
 """
 =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
@@ -8,58 +7,58 @@
 ██╔═══╝ ██╔══██╗██║   ██║██   ██║██╔══╝  ██║        ██║       ╚██╗ ██╔╝██║██║   ██║██║██║     ██╔══██║██║╚██╗██║   ██║   
 ██║     ██║  ██║╚██████╔╝╚█████╔╝███████╗╚██████╗   ██║        ╚████╔╝ ██║╚██████╔╝██║███████╗██║  ██║██║ ╚████║   ██║   
 ╚═╝     ╚═╝  ╚═╝ ╚═════╝  ╚════╝ ╚══════╝ ╚═════╝   ╚═╝         ╚═══╝  ╚═╝ ╚═════╝ ╚═╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═══╝   ╚═╝                                                                                                                            
-                  _                     
-  _ __ ___   __ _(_)_ __    _ __  _   _ 
- | '_ ` _ \ / _` | | '_ \  | '_ \| | | |
- | | | | | | (_| | | | | |_| |_) | |_| |
- |_| |_| |_|\__,_|_|_| |_(_) .__/ \__, |
-                           |_|    |___/ 
-                    
+            _                                                            _                     
+  _ __ ___ | |     _ __  _ __ ___   ___ ___  ___ ___     _ __ ___   __ _(_)_ __    _ __  _   _ 
+ | '_ ` _ \| |    | '_ \| '__/ _ \ / __/ _ \/ __/ __|   | '_ ` _ \ / _` | | '_ \  | '_ \| | | |
+ | | | | | | |    | |_) | | | (_) | (_|  __/\__ \__ \   | | | | | | (_| | | | | |_| |_) | |_| |
+ |_| |_| |_|_|____| .__/|_|  \___/ \___\___||___/___/___|_| |_| |_|\__,_|_|_| |_(_) .__/ \__, |
+            |_____|_|                              |_____|                        |_|    |___/ 
+
 =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 #   AUTHOR          |       Ryan Woodward
 #   ORGANIZATION    |       Grand Canyon University
 #   CLASS           |       SWE452 - SDLC II
-#   DATE            |       September 11, 2023
+#   DATE            |       September 29, 2023
 #   PROJECT         |       Project Vigilant - A Comprehensive Linux Server Monitoring System
-#   FILE            |       main.py
+#   FILE            |       ml_processes_main.py
 #-------------------------------------------------------------------------------------------------------------------------------
-#   DESCRIPTION     |       This file is the entry point into the Project Vigilant application. From this file all other
-#                   |       primary process and operations are called. Such as Data Handling (collection, preparation, and storage),
-#                   |       ML Training (... ... ...) etc.
+#   DESCRIPTION     |       This file serves as the entry point to all Machine Learning Operations. Such as Data Cleaning, 
+#                   |       Model definition, Model Training, Predictive Analysis, etc.
 #                   |   
 =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 """
+
 
 #*-----------------------------------------------------------------------------------------
 #*                                        IMPORTS
 #*-----------------------------------------------------------------------------------------
 
 
-#? Imports for files Defined By Project Vigilant:
-from data_handling_main import *
-
 #*-----------------------------------------------------------------------------------------
-#*                                      FUNCTIONS
+#*                                    GLOBAL VARIABLES
 #*-----------------------------------------------------------------------------------------
 
 
-
 #*-----------------------------------------------------------------------------------------
-#*                                      ENTRY POINT
+#*                                       FUNCTIONS
 #*-----------------------------------------------------------------------------------------
-try:
-
-    iteration_counter = 102
-
-    print("**************************************************\n\tInitiating Project Vigilant\n**************************************************")
-
-    while True:
-
-        init_data_handling(iteration_counter)
 
 
+"""
+    
+    get data keys 0-100 from redis and store them in dictionaries
+        these ought to be seprated by key and then the old dictionary is overwrittent to save space
+        the important key_value pairs are: CPU Usage, load average, and throughput
 
-        iteration_counter += 1
-        print(f"Iteration Counter: {iteration_counter}")
-except KeyboardInterrupt:
-    print("\nCtrl+C detected. Exiting Program... Auf Wiedersehen!")
+    traing the model using the specific dictionaries
+
+    predict the next value regarding the cpu usage, load average, and thre throughput.
+
+    save the predicted values (with the current timestamp) to postgres table, 
+        this is a new table, it can have rows for each cpu, load average, and throughput predictions
+        then add these new predicted values to the Grafana visualizations
+
+    FINALLY: DEPLOY TO CLOUD!
+
+
+ """
