@@ -82,7 +82,7 @@ def prepare_memory_usage_data(memory_usage_dict):
     free_memory = memory_usage_dict['free_memory_mb']
 
     #? Calculate the percentage of free memory and format it as an integer
-    percent_free = ((free_memory / total_memory) * 100)
+    percent_free = ((free_memory / total_memory - used_memory) * 100)
 
     #? Return the extracted values along with the formatted percentage
     return total_memory, used_memory, free_memory, "{:.0f}".format(percent_free)

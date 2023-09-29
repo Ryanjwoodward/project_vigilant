@@ -42,6 +42,9 @@ from data_storage.data_storage_main import *            #? Import the Primary Da
 #*                                    GLOBAL VARIABLES
 #*-----------------------------------------------------------------------------------------
 
+#* -------------------------------------------
+#*  DATA COLLECTION DICTIONARY
+#* -------------------------------------------
 #? This dictionary is used to store all the gathered metrics from the data_collection scripts
 #? It is stored as unedited, and uncleaned data. It will be sent to the data_cleaning scripts.
 #? Following this the data will be sent to the data_storage scripts and on to Redis
@@ -58,6 +61,9 @@ metrics_dictionary = {
     "timestamp"     : "--"
 }
 
+#* -------------------------------------------
+#* DASHBOARD DISPLAY DISCTIONARY
+#* -------------------------------------------
 #? This dictiojary is used to store all the collected data after cleaning/preparation. This
 #? dictionary data is heavily edited and expanded so that is can be stored in a Redis Cache
 #? (for use with AWS) and also for a PostgresSQL Schema (for Grafana prior to Cloud Launch)
@@ -84,6 +90,23 @@ prepared_dictionary = {
     'perf_uptime_users'      : "--",
     'timestamp'              : "--"
 }
+
+#* -------------------------------------------
+#*  ML TRAINING DICTIONARIES
+#* -------------------------------------------
+get_cpu_usage_1mi_dict = {
+    'timestamp' :   "--"
+}
+
+get_cpu_usage_5mi_dict = {
+    'timestamp' :   "--"
+}
+
+get_cpu_usage_15mi_dict = {
+    'timestamp' :   "--"
+}
+
+
 
 
 #*-----------------------------------------------------------------------------------------
@@ -112,7 +135,7 @@ def init_data_handling(iteration_counter):
 
     #? Step 3: Initialize data storage, which stores the prepared data in a database
     init_data_storage(prepared_dictionary, iteration_counter)
-    time.sleep(2)
+    time.sleep(5)
 
 
 """

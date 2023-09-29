@@ -52,7 +52,7 @@ from data_preparation.preparation_performance import *        #? Import all func
      the data in a way that makes it useful to store in a Redis Cache and a PostgresSQL Schema.
 """
 def init_data_preparation(dirty_data_dict, clean_data_dict):
-    print("\n\nInitiating Preparation.")
+    print("Initiating  Data Preparation.")
 
     #? Prepare System Resource Usage Data
     clean_data_dict['cpu_usage_1mi'], clean_data_dict['cpu_usage_5mi'], clean_data_dict['cpu_usage_15mi'] = prepare_cpu_usage_data(dirty_data_dict['cpu_usage']) 

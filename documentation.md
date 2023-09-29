@@ -35,3 +35,6 @@ sudo apt-get install libpq-dev
 
 ### Accessing PostGresSQL Terminal
 psql -U vigilant_developer -d project_vigilant_db -W
+
+### Page for accessing Grafana
+http://localhost:3000/

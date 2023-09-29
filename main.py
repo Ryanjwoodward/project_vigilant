@@ -45,10 +45,10 @@ from data_handling_main import *
 #*-----------------------------------------------------------------------------------------
 try:
 
-    iteration_counter = 0
+    iteration_counter = 69
 
     while True:
-        print("Calling Data handling Main.")
+        print("Initiating Project Vigilant")
         init_data_handling(iteration_counter)
 
         time.sleep(5)

@@ -58,6 +58,9 @@ from data_storage.data_storage_postgres import *    #? Import for storing data i
     This function enables data to be stored in both Redis and PostgreSQL databases, facilitating data storage and retrieval for the project.
 """
 def init_data_storage(prepared_data, data_key):
+
+    print("Iniating Data Storage.")
+
     #? Store prepared data in Redis using the specified data key
     store_data_in_redis(prepared_data, data_key)
 
