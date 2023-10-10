@@ -122,9 +122,6 @@ def init_data_handling(iteration_counter):
     print("\t\tData Successfully Stored.\n\n")
     time.sleep(0.5)
 
-    #print("\n\n\n")
-    #for key, value in prepared_dictionary.items():
-    #    print(f'{key}: {value}')
 
 """
     Simple function to obtain the current date and time so that each data handling cycle can be distinguished
@@ -139,4 +136,8 @@ def get_current_timestamp():
     This function simply allows outside files to access the data dictionary
 """
 def get_prepared_data():
+
+    #for key, value in prepared_dictionary.items():
+    #    print(f'{key}: {value}')
+
     return prepared_dictionary
