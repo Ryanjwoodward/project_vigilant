@@ -25,7 +25,7 @@
 #-------------------------------------------------------------------------------------------------------------------------------
 #   DESCRIPTION     |       This file is the entry point into the Project Vigilant application. From this file all other
 #                   |       primary process and operations are called. Such as Data Handling (collection, preparation, and storage),
-#                   |       ML Training (... ... ...) etc.
+#                   |       ML Training, Data Cleaning, Data Prediction, and additional storage.
 #                   |   
 =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 """
@@ -50,7 +50,7 @@ from ml_processes_main import *
 #*-----------------------------------------------------------------------------------------
 try:
 
-    iteration_counter = 230
+    iteration_counter = 238
 
     print("**************************************************\n\tInitiating Project Vigilant\n**************************************************")
 
