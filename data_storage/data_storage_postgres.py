@@ -39,6 +39,7 @@ from psycopg2 import sql
 #*                                    GLOBAL VARIABLES
 #*-----------------------------------------------------------------------------------------
 
+"""
 #? Establish a connection to the PostgreSQL database
 db_connection = psycopg2.connect(
     host="localhost",
@@ -46,9 +47,19 @@ db_connection = psycopg2.connect(
     user="vigilant_developer",
     password="root"
 )
+"""
+
+db_connection = psycopg2.connect(
+        database="vigilant_database",
+        user="postgres",
+        password="postgresroot",
+        host="vigilant-aws-rds.c23zt6fnats7.us-east-2.rds.amazonaws.com",
+        port='5432'
+    )
 
 #? Define the schema and table names for PostgreSQL
-schema_name = "project_vigilant_schema"
+#! schema_name = "project_vigilant_schema" #! local deployment of vigilant
+schema_name = "vigilant_schema"
 table_name = "collected_data_metrics"
 
 #*-----------------------------------------------------------------------------------------

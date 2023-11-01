@@ -31,7 +31,8 @@ sudo apt-get install libpq-dev
 
 ## Create a script that installs all the required Pip Libraries
 
-
+### Conencting to AWS RDS PostgreSQL
+psql -h vigilant-aws-rds.c23zt6fnats7.us-east-2.rds.amazonaws.com -U postgres -d vigilant_database -W
 
 ### Accessing PostGresSQL Terminal
 psql -U vigilant_developer -d project_vigilant_db -W
